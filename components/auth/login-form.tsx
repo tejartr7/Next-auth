@@ -58,8 +58,10 @@ export const LoginForm = ({
         setSuccess('');
         setTransition(() => {
             Login(values).then((data) => {
-                setError(data.error);
-                setSuccess(data.success);
+                if(data?.error)
+                setError(data?.error);
+                /*else if(data?.success)
+                setSuccess(data.success);*/
             })
         });
     };
@@ -109,15 +111,15 @@ export const LoginForm = ({
                                     </FormItem>
                                 )}
                             />
-                            <FormError message={error} />
-                            <FormSuccess message={success} />
+                             <FormError message={error} />
+                <FormSuccess message={success} />
                             <div className='flex items-center justify-center'>
                                 <Button type="submit" disabled={isLoading} >Login</Button>
                             </div>
                         </form>
                     </Form>
                 </CardContent>
-
+               
                 {showSocial && (
                     <CardFooter>
                         <Social />
