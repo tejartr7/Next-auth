@@ -23,41 +23,42 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { LoginSchema } from "@/schemas/index"
+import { RegisterSchema } from "@/schemas/index"
 import { FormError } from "@/components/auth/form-error";
 import { FormSuccess } from "@/components/auth/form-success";
-import { Login } from '@/actions/login';
+import { Register } from '@/actions/register';
 import { useTransition } from "react";
 import { useState } from "react";
-interface LoginFormProps {
+interface RegisterFormProps {
     children: React.ReactNode;
     header: string,
     backButtonLabel: string,
     backButtonHref: string,
     showSocial?: boolean,
 };
-export const LoginForm = ({
+export const RegisterForm = ({
     header,
     backButtonLabel,
     backButtonHref,
     showSocial,
     children,
-}: LoginFormProps) => {
+}: RegisterFormProps) => {
     const [error, setError] = useState<string | undefined>('');
     const [success, setSuccess] = useState<string | undefined>('');
     const [isLoading, setTransition] = useTransition();
-    const form = useForm<z.infer<typeof LoginSchema>>({
-        resolver: zodResolver(LoginSchema),
+    const form = useForm<z.infer<typeof RegisterSchema>>({
+        resolver: zodResolver(RegisterSchema),
         defaultValues: {
+            name: '',
             email: '',
             password: '',
         }
     })
-    const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
         setError('');
         setSuccess('');
         setTransition(() => {
-            Login(values).then((data) => {
+            Register(values).then((data) => {
                 setError(data.error);
                 setSuccess(data.success);
             })
@@ -66,15 +67,31 @@ export const LoginForm = ({
 
     return (
         <div className=' bg-white h-[80vh] w-[80vw] lg:h-[80vh] lg:w-[40vw]' style={{ borderRadius: '10px' }}>
-            <Card className=' bg-white h-[80vh] w-[80vw] lg:h-[80vh] lg:w-[40vw]' style={{ borderRadius: '10px' }}>
+            <Card className=' bg-white h-[90vh] w-[80vw] lg:h-[90vh] lg:w-[40vw]' style={{ borderRadius: '10px' }}>
                 <CardHeader className="text-center">
                     <CardTitle className='text-3xl'>{header}</CardTitle>
-                    <CardDescription className='font-bold font-Poppins'>Welcome Back🎉</CardDescription>
+                    <CardDescription className='font-bold font-Poppins'>Create an Account😊</CardDescription>
                 </CardHeader>
                 <CardContent>
-
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className='font-bold'>UserName</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                disabled={isLoading}
+                                                type="text"
+                                                placeholder="enter a username"
+                                                {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <FormField
                                 control={form.control}
                                 name="email"
@@ -112,12 +129,11 @@ export const LoginForm = ({
                             <FormError message={error} />
                             <FormSuccess message={success} />
                             <div className='flex items-center justify-center'>
-                                <Button type="submit" disabled={isLoading} >Login</Button>
+                                <Button type="submit" disabled={isLoading} >Register</Button>
                             </div>
                         </form>
                     </Form>
                 </CardContent>
-
                 {showSocial && (
                     <CardFooter>
                         <Social />
