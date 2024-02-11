@@ -2,8 +2,10 @@
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
+import { useSearchParams } from "next/navigation";
 export const Social = () => {
-
+    const SearchParams=useSearchParams();
+    const callbackUrl=SearchParams.get('callbackUrl');
     return (
         <div className="flex justify-center items-center w-full gap-x-2">
             <Button

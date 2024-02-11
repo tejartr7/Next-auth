@@ -6,7 +6,9 @@ import { DEFAULT_LOGIN_REDIRECT } from '@/route'
 import { error } from 'console';
 import { AuthError } from "next-auth";
 
-export const Login = async (values: z.infer<typeof LoginSchema>) => {
+export const Login = async (values: z.infer<typeof LoginSchema>,
+    callbackUrl?: string | null,
+    ) => {
     const valid = LoginSchema.safeParse(values);
     if (!valid.success) {
         return { error: "Invalid Credentials" };
@@ -17,7 +19,7 @@ export const Login = async (values: z.infer<typeof LoginSchema>) => {
             {
                 email,
                 password,
-                redirectTo: DEFAULT_LOGIN_REDIRECT,
+                redirectTo: callbackUrl||DEFAULT_LOGIN_REDIRECT,
             });
     }
     catch (error) {

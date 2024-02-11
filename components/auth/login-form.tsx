@@ -29,6 +29,8 @@ import { FormSuccess } from "@/components/auth/form-success";
 import { Login } from '@/actions/login';
 import { useTransition } from "react";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+
 interface LoginFormProps {
     children: React.ReactNode;
     header: string,
@@ -43,9 +45,11 @@ export const LoginForm = ({
     showSocial,
     children,
 }: LoginFormProps) => {
+    const searchParams=useSearchParams();
     const [error, setError] = useState<string | undefined>('');
     const [success, setSuccess] = useState<string | undefined>('');
     const [isLoading, setTransition] = useTransition();
+    const callbackUrl=searchParams.get('callbackUrl');
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -57,7 +61,7 @@ export const LoginForm = ({
         setError('');
         setSuccess('');
         setTransition(() => {
-            Login(values).then((data) => {
+            Login(values, callbackUrl).then((data) => {
                 if(data?.error)
                 setError(data?.error);
                 /*else if(data?.success)
