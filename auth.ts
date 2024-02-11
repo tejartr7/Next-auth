@@ -5,10 +5,6 @@ import { PrismaAdapter } from '@auth/prisma-adapter'
 import { db } from "@/lib/db"
 import {userById} from '@/data/user';
 
-interface TokenWithJWT extends JWT {
-  // Define any additional properties you want to include in the token
-  customProperty?: string;
-}
 export const {
   handlers: { GET, POST },
   auth,
