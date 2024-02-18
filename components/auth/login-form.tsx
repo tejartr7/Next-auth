@@ -64,8 +64,7 @@ export const LoginForm = ({
             Login(values, callbackUrl).then((data) => {
                 if(data?.error)
                 setError(data?.error);
-                /*else if(data?.success)
-                setSuccess(data.success);*/
+                setSuccess(data?.success);
             })
         });
     };
