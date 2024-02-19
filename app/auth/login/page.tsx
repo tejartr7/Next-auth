@@ -1,14 +1,9 @@
-'use client'
-import React,{Suspense} from "react";
+"use client";
+import React, { Suspense } from "react";
 import { LoginForm } from "@/components/auth/login-form";
 import { useSearchParams } from "next/navigation";
-
-const Page = () => {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
-
+function Form() {
   return (
-    <Suspense>
     <div className="flex items-center justify-center h-screen font-Poppins">
       <div
         className=" bg-white h-[80vh] w-[80vw] lg:h-[80vh] lg:w-[40vw]"
@@ -24,6 +19,15 @@ const Page = () => {
         </LoginForm>
       </div>
     </div>
+  );
+}
+const Page = () => {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
+
+  return (
+    <Suspense>
+      <Form />
     </Suspense>
   );
 };
