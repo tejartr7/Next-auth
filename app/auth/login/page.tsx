@@ -8,7 +8,7 @@ const Page = () => {
   const callbackUrl = searchParams.get("callbackUrl");
 
   return (
-    
+    <Suspense>
     <div className="flex items-center justify-center h-screen font-Poppins">
       <div
         className=" bg-white h-[80vh] w-[80vw] lg:h-[80vh] lg:w-[40vw]"
@@ -24,7 +24,7 @@ const Page = () => {
         </LoginForm>
       </div>
     </div>
-    
+    </Suspense>
   );
 };
 
