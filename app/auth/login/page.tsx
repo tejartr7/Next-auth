@@ -22,13 +22,12 @@ function Form() {
   );
 }
 const Page = () => {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
-
   return (
-    <Suspense>
-      <Form />
-    </Suspense>
+    <div>
+      <Suspense>
+        <Form />
+      </Suspense>
+    </div>
   );
 };
 
