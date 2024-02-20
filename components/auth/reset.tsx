@@ -1,5 +1,5 @@
 "use client";
-
+import { Suspense } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
@@ -52,6 +52,7 @@ export const ResetForm = () => {
   };
 
   return (
+    <Suspense>
     <div
       className=" bg-white h-[80vh] w-[80vw] lg:h-[80vh] lg:w-[40vw]"
       style={{ borderRadius: "10px" }}
@@ -99,5 +100,6 @@ export const ResetForm = () => {
         </CardContent>
       </Card>
     </div>
+    </Suspense>
   );
 };

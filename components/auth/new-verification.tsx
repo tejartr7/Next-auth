@@ -1,4 +1,5 @@
 "use client";
+import { Suspense } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
 import { useSearchParams } from "next/navigation";
@@ -48,6 +49,7 @@ export const NewVerificationForm = () => {
   }, [onSubmit]);
 
   return (
+    <Suspense>
     <div className="flex items-center justify-center h-[40vh] font-Poppins">
       <div
         className=" bg-white h-[50vh] w-[80vw] lg:h-[20vh] lg:w-[40vw]"
@@ -78,5 +80,6 @@ export const NewVerificationForm = () => {
         </Card>
       </div>
     </div>
+    </Suspense>
   );
 };
