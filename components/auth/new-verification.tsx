@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/card";
 import { BackButton } from "./back-button";
 import { Button } from "@/components/ui/button";
-import Link from 'next/link';
+import Link from "next/link";
 export const NewVerificationForm = () => {
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
@@ -50,36 +50,36 @@ export const NewVerificationForm = () => {
 
   return (
     <Suspense>
-    <div className="flex items-center justify-center h-[40vh] font-Poppins">
-      <div
-        className=" bg-white h-[50vh] w-[80vw] lg:h-[20vh] lg:w-[40vw]"
-        style={{ borderRadius: "10px" }}
-      >
-        <Card
-          className=" bg-white h-[80vh] w-[80vw] lg:h-[40vh] lg:w-[40vw]"
+      <div className="flex items-center justify-center h-[40vh] font-Poppins">
+        <div
+          className=" bg-white h-[50vh] w-[80vw] lg:h-[20vh] lg:w-[40vw]"
           style={{ borderRadius: "10px" }}
         >
-          <CardHeader className="text-center">
-            <CardTitle className="text-3xl">Next Auth 🔐</CardTitle>
-            <CardDescription className="font-bold font-Poppins">
-              Verifying email id....
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-center">
-              <BeatLoader color="#000" />
-            </div>
-          </CardContent>
-          <CardFooter className="font-bold font-Poppins text-lg flex justify-center items-center">
-            <div className="text-center font-bold font-Poppins text-lg">
-              <Button>
-                <Link href="/auth/login">Login</Link>
-              </Button>
-            </div>
-          </CardFooter>
-        </Card>
+          <Card
+            className=" bg-white h-[80vh] w-[80vw] lg:h-[40vh] lg:w-[40vw]"
+            style={{ borderRadius: "10px" }}
+          >
+            <CardHeader className="text-center">
+              <CardTitle className="text-3xl">Next Auth 🔐</CardTitle>
+              <CardDescription className="font-bold font-Poppins">
+                Verifying email id....
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex justify-center">
+                <BeatLoader color="#000" />
+              </div>
+            </CardContent>
+            <CardFooter className="font-bold font-Poppins text-lg flex justify-center items-center">
+              <div className="text-center font-bold font-Poppins text-lg">
+                <Button>
+                  <Link href="/auth/login">Login</Link>
+                </Button>
+              </div>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
-    </div>
     </Suspense>
   );
 };
