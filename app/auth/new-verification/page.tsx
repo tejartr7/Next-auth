@@ -4,7 +4,7 @@ const Page = () => {
   return (
     <Suspense>
     <div>
-        < NewVerificationForm />
+       <NewVerificationForm />
     </div>
     </Suspense>
   )

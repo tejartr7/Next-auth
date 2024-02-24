@@ -3,9 +3,10 @@ import { Suspense } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { ResetSchema } from "@/schemas/index";
+import { NewPasswordSchema } from "@/schemas";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -18,34 +19,38 @@ import {
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/auth/form-error";
 import { FormSuccess } from "@/components/auth/form-success";
-import { reset } from "@/actions/reset";
+import { newPassword } from "@/actions/new-password";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from "@/components/ui/card";
 import Link from "next/link";
-export const ResetForm = () => {
+import { BeatLoader } from "react-spinners";
+export const NewPasswordForm = () => {
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof ResetSchema>>({
-    resolver: zodResolver(ResetSchema),
+  const form = useForm<z.infer<typeof NewPasswordSchema>>({
+    resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
-      email: "",
+      password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof ResetSchema>) => {
+  const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
-      reset(values).then((data) => {
+      newPassword(values, token).then((data) => {
         setError(data?.error);
         setSuccess(data?.success);
       });
@@ -65,7 +70,7 @@ export const ResetForm = () => {
           <CardHeader className="text-center">
             <CardTitle className="text-3xl">Next Auth 🔐</CardTitle>
             <CardDescription className="font-bold font-Poppins">
-              Welcome Back🎉
+              Enter a new password
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -77,16 +82,16 @@ export const ResetForm = () => {
                 <div className="space-y-4">
                   <FormField
                     control={form.control}
-                    name="email"
+                    name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel>Password</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
                             disabled={isPending}
-                            placeholder="john.doe@example.com"
-                            type="email"
+                            placeholder="******"
+                            type="password"
                           />
                         </FormControl>
                         <FormMessage />
@@ -97,7 +102,7 @@ export const ResetForm = () => {
                 <FormError message={error} />
                 <FormSuccess message={success} />
                 <Button disabled={isPending} type="submit" className="w-full">
-                  Send reset email
+                  Reset password
                 </Button>
               </form>
             </Form>
@@ -105,7 +110,7 @@ export const ResetForm = () => {
           <CardFooter className="font-bold font-Poppins text-lg flex justify-center items-center">
             <div className="text-center font-bold font-Poppins text-lg">
               <Button>
-                <Link href="/auth/login">Login</Link>
+                <Link href="/auth/login">Back to Login</Link>
               </Button>
             </div>
           </CardFooter>
