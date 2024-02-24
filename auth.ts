@@ -5,11 +5,13 @@ import { JWT } from "next-auth/jwt";
 import { db } from "@/lib/db";
 import authConfig from "@/auth.config";
 import { userById } from "@/data/user";
+import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-verification";
 export const {
   handlers: { GET, POST },
   auth,
   signIn,
   signOut,
+  
 } = NextAuth({
   pages: {
     signIn: "/auth/login",
@@ -27,30 +29,28 @@ export const {
     async signIn({ user, account }) {
       // Allow OAuth without email verification
       if (account?.provider !== "credentials") return true;
-      if(user?.id==null) return false;
+      if (user?.id == null) return false;
       const existingUser = await userById(user.id);
 
       // Prevent sign in without email verification
       if (!existingUser?.emailVerified) return false;
 
-      /*if (existingUser.isTwoFactorEnabled) {
-        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id);
+      if (existingUser.isTwoFactorEnabled) {
+        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
+          existingUser.id
+        );
 
         if (!twoFactorConfirmation) return false;
 
         // Delete two factor confirmation for next sign in
         await db.twoFactorConfirmation.delete({
-          where: { id: twoFactorConfirmation.id }
+          where: { id: twoFactorConfirmation.id },
         });
-      }*/
+      }
 
       return true;
     },
-    async jwt({ token, user }) {
-      console.log({ user });
-      //console.log({ token });
-      return token;
-    },
+
     async session({ session, token }: { session: Session; token?: JWT }) {
       if (token == null) {
         return session;
@@ -73,6 +73,23 @@ export const {
         session.user.isOAuth = token.isOAuth as boolean;
       }
       return session;
+    },
+    async jwt({ token }) {
+      if (!token.sub) return token;
+
+      const existingUser = await userById(token.sub);
+
+      if (!existingUser) return token;
+
+      const existingAccount = await userById(existingUser.id);
+
+      token.isOAuth = !!existingAccount;
+      token.name = existingUser.name;
+      token.email = existingUser.email;
+      token.role = existingUser.role;
+      token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
+
+      return token;
     },
   },
   adapter: PrismaAdapter(db),
